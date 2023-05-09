@@ -1,0 +1,31 @@
+"use strict";
+/** @format */
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = require("express");
+var userController_1 = __importDefault(require("../controllers/userController"));
+var personnelActivitiesController_1 = __importDefault(require("../controllers/personnelActivitiesController"));
+var generateCodeController_1 = __importDefault(require("../controllers/generateCodeController"));
+var usermessegeController_1 = __importDefault(require("../controllers/usermessegeController"));
+var allmessageController_1 = __importDefault(require("../controllers/allmessageController"));
+var authMiddleware_1 = __importDefault(require("../middleware/authMiddleware"));
+var checkRoleMiddleware_1 = __importDefault(require("../middleware/checkRoleMiddleware"));
+var router = (0, express_1.Router)();
+router.post("/reguser", userController_1.default.registration);
+router.post("/login", userController_1.default.login);
+router.get("/login", authMiddleware_1.default, userController_1.default.check);
+router.post("/createmessage", usermessegeController_1.default.create);
+router.get("/getAllmessage", usermessegeController_1.default.getAll);
+router.delete("/deletemessage", usermessegeController_1.default.delete);
+router.post("/createmessageAll", allmessageController_1.default.create);
+router.get("/getAllmessageAll", allmessageController_1.default.getAll);
+router.delete("/deletemessageAll", allmessageController_1.default.delete);
+router.post("/create", checkRoleMiddleware_1.default, personnelActivitiesController_1.default.create);
+router.get("/getall", personnelActivitiesController_1.default.getAll);
+router.get("/getone", personnelActivitiesController_1.default.getOne);
+router.put("/update", personnelActivitiesController_1.default.update);
+router.delete("/delete", personnelActivitiesController_1.default.delete);
+router.get("/generation", generateCodeController_1.default.generation);
+exports.default = router;
