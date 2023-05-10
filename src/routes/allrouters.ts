@@ -13,7 +13,7 @@ const router = Router();
 
 router.post("/reguser", UserController.registration);
 router.post("/login", UserController.login);
-router.get("/login", auth, UserController.check);
+router.get("/check", auth, UserController.check);
 
 router.post("/createmessage", MessegeFromUserCreate.create);
 router.get("/getAllmessage", MessegeFromUserCreate.getAll);

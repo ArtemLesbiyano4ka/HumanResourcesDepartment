@@ -15,7 +15,7 @@ var checkRoleMiddleware_1 = __importDefault(require("../middleware/checkRoleMidd
 var router = (0, express_1.Router)();
 router.post("/reguser", userController_1.default.registration);
 router.post("/login", userController_1.default.login);
-router.get("/login", authMiddleware_1.default, userController_1.default.check);
+router.get("/check", authMiddleware_1.default, userController_1.default.check);
 router.post("/createmessage", usermessegeController_1.default.create);
 router.get("/getAllmessage", usermessegeController_1.default.getAll);
 router.delete("/deletemessage", usermessegeController_1.default.delete);

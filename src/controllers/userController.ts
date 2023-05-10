@@ -6,12 +6,12 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config(); //1
 
 class UserController {
   async registration(req: Request, res: Response) {
     const { email, password, role, code } = req.body;
-    const findcode = await OneTimeCode.findOne({ where: { code: code } });
+    const findcode = await OneTimeCode.findOne({ where: { code: code } }); //1
     if (!findcode) {
       return res.status(400).json({ message: "Такого кода не существует" });
     }
@@ -34,7 +34,7 @@ class UserController {
       process.env.SECRET_KEY,
       { expiresIn: "24h" }
     );
-    await OneTimeCode.destroy({ where: { code: code } });
+    await OneTimeCode.destroy({ where: { code: code } }); //1
     return res.status(200).json({ token });
   }
 
@@ -54,7 +54,7 @@ class UserController {
     const token = jwt.sign(
       { id: user.dataValues.id, email, role: user.dataValues.role },
       process.env.SECRET_KEY,
-      { expiresIn: "24h" }
+      { expiresIn: "3h" }
     );
     return res.json({ token });
   }
