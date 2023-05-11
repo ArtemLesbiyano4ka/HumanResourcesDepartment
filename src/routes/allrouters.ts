@@ -11,7 +11,7 @@ import role from "../middleware/checkRoleMiddleware";
 
 const router = Router();
 
-router.post("/reguser", UserController.registration);
+router.post("/registration", UserController.registration);
 router.post("/login", UserController.login);
 router.get("/check", auth, UserController.check);
 

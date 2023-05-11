@@ -13,7 +13,7 @@ var allmessageController_1 = __importDefault(require("../controllers/allmessageC
 var authMiddleware_1 = __importDefault(require("../middleware/authMiddleware"));
 var checkRoleMiddleware_1 = __importDefault(require("../middleware/checkRoleMiddleware"));
 var router = (0, express_1.Router)();
-router.post("/reguser", userController_1.default.registration);
+router.post("/registration", userController_1.default.registration);
 router.post("/login", userController_1.default.login);
 router.get("/check", authMiddleware_1.default, userController_1.default.check);
 router.post("/createmessage", usermessegeController_1.default.create);

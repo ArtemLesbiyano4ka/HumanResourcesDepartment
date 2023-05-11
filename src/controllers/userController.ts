@@ -6,12 +6,18 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
-dotenv.config(); //1
+dotenv.config();
+
+const generateJwt = (id: number, email: string, role: string) => {
+  return jwt.sign({ id, email, role }, process.env.SECRET_KEY, {
+    expiresIn: "24h",
+  });
+};
 
 class UserController {
   async registration(req: Request, res: Response) {
     const { email, password, role, code } = req.body;
-    const findcode = await OneTimeCode.findOne({ where: { code: code } }); //1
+    const findcode = await OneTimeCode.findOne({ where: { code: code } });
     if (!findcode) {
       return res.status(400).json({ message: "Такого кода не существует" });
     }
@@ -29,12 +35,8 @@ class UserController {
     const hashPassword = await bcrypt.hash(password, 5);
     const user = await User.create({ email, role, password: hashPassword });
     await Basket.create({ userId: user.dataValues.id });
-    const token = jwt.sign(
-      { id: user.dataValues.id, email, role },
-      process.env.SECRET_KEY,
-      { expiresIn: "24h" }
-    );
-    await OneTimeCode.destroy({ where: { code: code } }); //1
+    const token = generateJwt(user.dataValues.id, email, role);
+    await OneTimeCode.destroy({ where: { code: code } });
     return res.status(200).json({ token });
   }
 
@@ -51,11 +53,7 @@ class UserController {
     if (!comparePassword) {
       res.status(403).json({ message: "Указан неверный пароль" });
     }
-    const token = jwt.sign(
-      { id: user.dataValues.id, email, role: user.dataValues.role },
-      process.env.SECRET_KEY,
-      { expiresIn: "3h" }
-    );
+    const token = generateJwt(user.dataValues.id, email, user.dataValues.role);
     return res.json({ token });
   }
 

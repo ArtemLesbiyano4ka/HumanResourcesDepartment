@@ -44,7 +44,12 @@ var models_1 = require("../models/models");
 var bcrypt_1 = __importDefault(require("bcrypt"));
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
+dotenv_1.default.config(); //1
+var generateJwt = function (id, email, role) {
+    return jsonwebtoken_1.default.sign({ id: id, email: email, role: role }, process.env.SECRET_KEY, {
+        expiresIn: "24h",
+    });
+};
 var UserController = /** @class */ (function () {
     function UserController() {
     }
@@ -83,10 +88,10 @@ var UserController = /** @class */ (function () {
                         return [4 /*yield*/, models_1.Basket.create({ userId: user.dataValues.id })];
                     case 5:
                         _b.sent();
-                        token = jsonwebtoken_1.default.sign({ id: user.dataValues.id, email: email, role: role }, process.env.SECRET_KEY, { expiresIn: "24h" });
+                        token = generateJwt(user.dataValues.id, email, role);
                         return [4 /*yield*/, models_1.OneTimeCode.destroy({ where: { code: code } })];
                     case 6:
-                        _b.sent();
+                        _b.sent(); //1
                         return [2 /*return*/, res.status(200).json({ token: token })];
                 }
             });
@@ -109,7 +114,7 @@ var UserController = /** @class */ (function () {
                         if (!comparePassword) {
                             res.status(403).json({ message: "Указан неверный пароль" });
                         }
-                        token = jsonwebtoken_1.default.sign({ id: user.dataValues.id, email: email, role: user.dataValues.role }, process.env.SECRET_KEY, { expiresIn: "24h" });
+                        token = jsonwebtoken_1.default.sign({ id: user.dataValues.id, email: email, role: user.dataValues.role }, process.env.SECRET_KEY, { expiresIn: "3h" });
                         return [2 /*return*/, res.json({ token: token })];
                 }
             });
