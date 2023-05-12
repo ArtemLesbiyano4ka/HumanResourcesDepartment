@@ -59,7 +59,7 @@ class UserController {
 
   async update(req: Request, res: Response) {
     try {
-      const id = req.query;
+      const id = req.query.id;
       const {
         fullname,
         employmentDate,
