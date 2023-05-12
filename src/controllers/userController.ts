@@ -57,6 +57,36 @@ class UserController {
     return res.json({ token });
   }
 
+  async update(req: Request, res: Response) {
+    try {
+      const id = req.query;
+      const {
+        fullname,
+        employmentDate,
+        workExperience,
+        salaryperhour,
+        workexperience,
+        desiredincome,
+        prospects,
+      } = req.body;
+      const updateUser = await User.update(
+        {
+          fullname: fullname,
+          employmentDate: employmentDate,
+          workExperience: workExperience,
+          salaryperhour: salaryperhour,
+          workexperience: workexperience,
+          desiredincome: desiredincome,
+          prospects: prospects,
+        },
+        { where: { id: id } }
+      );
+      res.status(200).json(updateUser);
+    } catch (e) {
+      res.status(400).json(e);
+    }
+  }
+
   async check(req: Request, res: Response) {
     res.json({ message: "WORKING!!!" });
   }
